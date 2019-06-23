@@ -1,2 +1,3 @@
 # keeparelease
-Publish beautiful GitHub release with Keep a changelog
+
+Publish beautiful GitHub release with Keep a changelog.
