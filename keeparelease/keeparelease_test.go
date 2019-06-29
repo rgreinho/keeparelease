@@ -1,7 +1,6 @@
 package keeparelease
 
 import (
-	"strings"
 	"testing"
 
 	"github.com/lithammer/dedent"
@@ -30,26 +29,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Make the Git operations idempotent.
-- Implement all the operations required to create an environment.
-- Create an Octopus client to simplify the operation using its REST API.
+- Make the Git operations idempotent. [#1]
+- Implement all the operations required to create an environment. [#2]
 - Add --dry-run flag to bypass the write operations.
 
 [//]: # (Release links)
-[0.3.0]: https://github.com/shipstation/hyperion/releases/tag/0.3.0
-[0.4.0]: https://github.com/shipstation/hyperion/releases/tag/0.4.0
+[0.3.0]: https://github.com/rgreinho/keeparelease/releases/tag/0.1.0
+[0.4.0]: https://github.com/rgreinho/keeparelease/releases/tag/0.2.0
 
 [//]: # (Issue/PR links)
-[#15]: https://github.com/shipstation/hyperion/pull/15
-[#16]: https://github.com/shipstation/hyperion/pull/16
+[#1]: https://github.com/rgreinho/keeparelease/pull/1
+[#2]: https://github.com/rgreinho/keeparelease/pull/2
 `
 
 func TestParseChangelog00(t *testing.T) {
-	title, content, err := ParseChangelog(strings.Split(changelog, "\n"))
+	title, content, err := ParseChangelog(changelog)
 	if err != nil {
 		t.Fatalf("failed to parse the changelog: %s", err)
 	}
-	expected := `
+
+	expectedTitle := "0.4.0"
+
+	expectedContent := `
 
   ### Added
 
@@ -60,11 +61,11 @@ func TestParseChangelog00(t *testing.T) {
   - A fix
   `
 
-	if dedent.Dedent(title) != dedent.Dedent("0.4.0") {
-		t.Fatalf("Error: title is %s, but expected is 0.4.0", title)
+	if dedent.Dedent(title) != dedent.Dedent(expectedTitle) {
+		t.Fatalf("Error: title is %s, but expected is %s", title, expectedTitle)
 	}
-	if dedent.Dedent(content) != dedent.Dedent(expected) {
-		t.Fatalf("Error: actual is %s, but expected is %s", content, expected)
+	if dedent.Dedent(content) != dedent.Dedent(expectedContent) {
+		t.Fatalf("Error: actual is %s, but expected is %s", content, expectedContent)
 	}
 
 }

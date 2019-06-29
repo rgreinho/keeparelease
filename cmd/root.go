@@ -26,14 +26,12 @@ var rootCmd = &cobra.Command{
 		utils.Check(err)
 
 		// Read the last release information from the Changelog.
-		title, content, err := keeparelease.ReadChangelog()
-		if err != nil {
-			return err
-		}
+		title, content, err := keeparelease.ReadChangelog("")
+		utils.Check(err)
 
 		// If extract only, simply display the content of the last release.
 		if extract {
-			fmt.Print(content)
+			fmt.Println(content)
 			return nil
 		}
 
@@ -48,6 +46,7 @@ var rootCmd = &cobra.Command{
 
 		// Prepare the release.
 		tag, err := cmd.Flags().GetString("tag")
+		utils.Check(err)
 		params := &github.Release{
 			TagName: tag,
 			Name:    title,
@@ -61,6 +60,7 @@ var rootCmd = &cobra.Command{
 
 		// Upload assets.
 		assets, err := cmd.Flags().GetStringArray("attach")
+		utils.Check(err)
 		uploadAssets(gh, release, assets)
 
 		return nil
