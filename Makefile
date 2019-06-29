@@ -31,7 +31,7 @@ build: ## Build the project for the current platform
 
 .PHONY: test
 test: ## Run the unit tests
-	go test .../keeparelease
+	go test -v .../keeparelease
 
 .PHONY: clean
 clean: clean-code ## Clean everything (!DESTRUCTIVE!)

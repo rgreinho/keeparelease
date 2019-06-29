@@ -7,15 +7,16 @@ import (
 	"strings"
 )
 
-const regexTitle string = `^\#\#\s+\[{1,2}(?P<full_version>(?P<major>(?:0|[1-9][0-9]*))\.(?P<minor>(?:0|[1-9][0-9]*))\.(?P<patch>(?:0|[1-9][0-9]*))(\-(?P<prerelease>(?:0|[1-9A-Za-z-][0-9A-Za-z-]*)(\.(?:0|[1-9A-Za-z-][0-9A-Za-z-]*))*))?(\+(?P<build>[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*))?)\]{1,2}\s+-?\s+(?P<date>.*)`
+// re is the regex matching a semver in a markdown H2 header.
+var re = regexp.MustCompile(`^\#\#\s+\[\[{1,2}(?P<full_version>(?P<major>(?:0|[1-9][0-9]*))\.(?P<minor>(?:0|[1-9][0-9]*))\.(?P<patch>(?:0|[1-9][0-9]*))(\-(?P<prerelease>(?:0|[1-9A-Za-z-][0-9A-Za-z-]*)(\.(?:0|[1-9A-Za-z-][0-9A-Za-z-]*))*))?(\+(?P<build>[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*))?)\]{1,2}\s+-?\s+(?P<date>.*)`)
 
 // ParseChangelog parses a ChangeLog respecting the Keep A Changelog format.
-func ParseChangelog(changelog []string) (string, string, error) {
-	re := regexp.MustCompile(regexTitle)
-	title := ""
+// Returns the title of the last release as well as its content.
+func ParseChangelog(changelog string) (title, content string, err error) {
+	changelogLines := strings.Split(changelog, "\n")
 	releaseInfo := make([]string, 1)
 	foundStart := false
-	for _, line := range changelog {
+	for _, line := range changelogLines {
 
 		// Look for a release line.
 		if re.MatchString(line) {
@@ -58,15 +59,20 @@ func ParseChangelog(changelog []string) (string, string, error) {
 }
 
 // ReadChangelog reads the changelog file.
-func ReadChangelog() (string, string, error) {
-	dat, err := ioutil.ReadFile("CHANGELOG.md")
+// Returns the title of the last release as well as its content.
+func ReadChangelog(file string) (title, content string, err error) {
+	if file == "" {
+		file = "CHANGELOG.md"
+	}
+	dat, err := ioutil.ReadFile(file)
 	if err != nil {
 		return "", "", err
 	}
-	content := string(dat)
-	title, info, err := ParseChangelog(strings.Split(content, "\n"))
+
+	changes := string(dat)
+	title, content, err = ParseChangelog(changes)
 	if err != nil {
 		return "", "", err
 	}
-	return title, info, nil
+	return title, content, nil
 }
