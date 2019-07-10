@@ -5,6 +5,8 @@ import (
 	"io/ioutil"
 	"regexp"
 	"strings"
+
+	"github.com/lithammer/dedent"
 )
 
 // re is the regex matching a semver in a markdown H2 header.
@@ -55,7 +57,8 @@ func ParseChangelog(changelog string) (title, content string, err error) {
 		return "", "", errors.New("could not extract release information")
 	}
 
-	return title, strings.Join(releaseInfo, "\n"), nil
+	trimmed := trimEdges(dedent.Dedent(strings.Join(releaseInfo, "\n")), " \n")
+	return title, trimmed, nil
 }
 
 // ReadChangelog reads the changelog file.
@@ -75,4 +78,10 @@ func ReadChangelog(file string) (title, content string, err error) {
 		return "", "", err
 	}
 	return title, content, nil
+}
+
+func trimEdges(s, cutset string) string {
+	trimmed := strings.TrimLeft(s, " \n")
+	trimmed = strings.TrimRight(trimmed, " \n")
+	return trimmed
 }

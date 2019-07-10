@@ -47,11 +47,8 @@ func TestParseChangelog00(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to parse the changelog: %s", err)
 	}
-
 	expectedTitle := "0.4.0"
-
-	expectedContent := `
-
+	expectedContent := trimEdges(dedent.Dedent(`
   ### Added
 
   - A feature
@@ -59,13 +56,13 @@ func TestParseChangelog00(t *testing.T) {
   ### Fixed
 
   - A fix
-  `
+  `), " \n")
 
 	if dedent.Dedent(title) != dedent.Dedent(expectedTitle) {
 		t.Fatalf("Error: title is %s, but expected is %s", title, expectedTitle)
 	}
-	if dedent.Dedent(content) != dedent.Dedent(expectedContent) {
-		t.Fatalf("Error: actual is %s, but expected is %s", content, expectedContent)
+	if content != expectedContent {
+		t.Fatalf("Error: content is %s, \nbut expected is %s.", content, expectedContent)
 	}
 
 }
