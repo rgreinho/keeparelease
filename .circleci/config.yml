@@ -1,0 +1,87 @@
+version: 2.1
+
+executors:
+  golang:
+    docker:
+      - image: circleci/golang:1.12
+    working_directory: ~/project
+
+repo_cache_key: &repo_cache_key
+  go-mod-{{ checksum "go.sum" }}.0
+
+
+jobs:
+  prepare:
+    executor: golang
+    steps:
+      - checkout
+      - restore_cache:
+          key: *repo_cache_key
+      - run:
+          name: prepare environment
+          command: |
+            go mod download
+      - save_cache:
+          key: *repo_cache_key
+          paths:
+            - /go/pkg/mod
+  test:
+    executor: golang
+    steps:
+      - checkout
+      - restore_cache:
+          key: *repo_cache_key
+      - run:
+          name: Run linters and unit-tests
+          command: |
+            go get -u golang.org/x/tools/cmd/goimports
+            go get -u golang.org/x/lint/golint
+            make test
+  build:
+    executor: golang
+    steps:
+      - checkout
+      - restore_cache:
+          key: *repo_cache_key
+      - run:
+          name: Build the artifact
+          command: make build
+  publish:
+    executor: golang
+    steps:
+      - checkout
+      - restore_cache:
+          key: *repo_cache_key
+      - run:
+          name: Build the artifacts for all the selected architectures and published a new GitHub release
+          command: make publish
+
+workflows:
+  version: 2
+  gates:
+    jobs:
+      - prepare:
+          filters:
+            tags:
+              only: /.*/
+      - test:
+          requires:
+            - prepare
+          filters:
+            tags:
+              only: /.*/
+      - build:
+          requires:
+            - prepare
+          filters:
+            tags:
+              only: /.*/
+      - publish:
+          requires:
+            - test
+            - build
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^\d+\.\d+\.\d+$/
