@@ -3,7 +3,7 @@ version: 2.1
 executors:
   golang:
     docker:
-      - image: circleci/golang:1.12
+      - image: circleci/golang:1.13-buster
     working_directory: ~/project
 
 repo_cache_key: &repo_cache_key
@@ -36,7 +36,9 @@ jobs:
           command: |
             go get -u golang.org/x/tools/cmd/goimports
             go get -u golang.org/x/lint/golint
-            make test
+            sudo apt-get install python3.7 python3-pip
+            pip3 install invoke
+            inv test
   build:
     executor: golang
     steps:
@@ -45,7 +47,10 @@ jobs:
           key: *repo_cache_key
       - run:
           name: Build the artifact
-          command: make build
+          command: |
+            sudo apt-get install python3.7 python3-pip
+            pip3 install invoke
+            inv dist
   publish:
     executor: golang
     steps:
@@ -54,7 +59,10 @@ jobs:
           key: *repo_cache_key
       - run:
           name: Build the artifacts for all the selected architectures and published a new GitHub release
-          command: make publish
+          command: |
+            sudo apt-get install python3.7 python3-pip
+            pip3 install invoke
+            inv publish
 
 workflows:
   version: 2
