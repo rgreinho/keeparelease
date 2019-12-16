@@ -62,7 +62,7 @@ jobs:
           command: |
             sudo apt-get install python3.7 python3-pip
             pip3 install invoke
-            inv publish
+            inv release
 
 workflows:
   version: 2

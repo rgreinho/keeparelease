@@ -5,4 +5,5 @@
 *.out
 *.so
 *.test
+.DS_Store
 dist/
