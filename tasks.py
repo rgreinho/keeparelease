@@ -53,11 +53,7 @@ def publish(c):
     tag = c.run("git describe", hide=True)
 
     # Get the assets to publish.
-    assets = [
-        f"-a {x}"
-        for x in build_dir.iterdir()
-        if x.is_file() and str(x).endswith(".zip")
-    ]
+    assets = [f"-a {x}" for x in build_dir.iterdir() if x.is_file() and str(x)]
 
     # Prepare the command to run
     cmd = f'keeparelease -t {tag.stdout.strip()} {" ".join(assets)}'
