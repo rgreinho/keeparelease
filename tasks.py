@@ -85,13 +85,12 @@ def builder(c, project, tag, output):
     """Build a project."""
     if not project.exists():
         raise ValueError(f"project {project} cannot be found in {project.resolve()}")
-    with c.cd(f"{project}"):
-        for platform in PLATFORMS:
-            cmd = (
-                f"GOOS={platform} GOARCH={GOARCH}"
-                f" go build -o {output.resolve()}-{tag}-{platform}-{GOARCH}"
-            )
-            c.run(cmd)
+    for platform in PLATFORMS:
+        cmd = (
+            f"GOOS={platform} GOARCH={GOARCH}"
+            f" go build -o {output.resolve()}-{tag}-{platform}-{GOARCH}"
+        )
+        c.run(cmd)
 
 
 @task(dist, publish)
