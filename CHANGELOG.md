@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [[1.1.2]] - 2019.12.30
+
+### Fixed
+
+- Fix `dist` task resulting in corrupt binaries.
+
 ## [[1.1.1]] - 2019-12-16
 
 ### Change
