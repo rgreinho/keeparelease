@@ -64,9 +64,6 @@ func ParseChangelog(changelog string) (title, content string, err error) {
 // ReadChangelog reads the changelog file.
 // Returns the title of the last release as well as its content.
 func ReadChangelog(file string) (title, content string, err error) {
-	if file == "" {
-		file = "CHANGELOG.md"
-	}
 	dat, err := ioutil.ReadFile(file)
 	if err != nil {
 		return "", "", err
