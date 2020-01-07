@@ -24,9 +24,11 @@ var rootCmd = &cobra.Command{
 		// Get the flags.
 		extract, err := cmd.Flags().GetBool("extract")
 		utils.Check(err)
+		file, err := cmd.Flags().GetString("file")
+		utils.Check(err)
 
 		// Read the last release information from the Changelog.
-		title, content, err := keeparelease.ReadChangelog("")
+		title, content, err := keeparelease.ReadChangelog(file)
 		utils.Check(err)
 
 		// If extract only, simply display the content of the last release.
@@ -81,6 +83,7 @@ func init() {
 	rootCmd.Flags().BoolP("extract", "x", false, "Only extract the last release information")
 	rootCmd.Flags().StringP("tag", "t", "", "Use a specific tag")
 	rootCmd.Flags().StringArrayP("attach", "a", []string{}, "Specify the assets to include into the release")
+	rootCmd.Flags().StringP("file", "f", "CHANGELOG.md", "Specify a changelog file")
 }
 
 func uploadAssets(gh *github.Client, release *github.Release, assets []string) {
