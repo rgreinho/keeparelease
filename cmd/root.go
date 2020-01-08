@@ -14,12 +14,14 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var cfgFile string
+// Version is used by the build system.
+var Version string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "keeparelease",
-	Short: "Create beautiful GitHub releases.",
+	Use:     "keeparelease",
+	Short:   "Create beautiful GitHub releases.",
+	Version: Version,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		// Get the flags.
 		extract, err := cmd.Flags().GetBool("extract")
@@ -79,7 +81,6 @@ func Execute() {
 }
 
 func init() {
-	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.keeparelease.yaml)")
 	rootCmd.Flags().BoolP("extract", "x", false, "Only extract the last release information")
 	rootCmd.Flags().StringP("tag", "t", "", "Use a specific tag")
 	rootCmd.Flags().StringArrayP("attach", "a", []string{}, "Specify the assets to include into the release")
