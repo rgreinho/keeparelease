@@ -1,8 +1,10 @@
 package keeparelease
 
 import (
+	"bytes"
 	"errors"
 	"io/ioutil"
+	"os/exec"
 	"regexp"
 	"strings"
 
@@ -81,4 +83,15 @@ func trimEdges(s, cutset string) string {
 	trimmed := strings.TrimLeft(s, " \n")
 	trimmed = strings.TrimRight(trimmed, " \n")
 	return trimmed
+}
+
+func GetTag() (string, error) {
+	cmd := exec.Command("git", "describe")
+	var out bytes.Buffer
+	cmd.Stdout = &out
+	err := cmd.Run()
+	if err != nil {
+		return "", err
+	}
+	return out.String(), nil
 }

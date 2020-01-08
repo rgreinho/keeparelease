@@ -51,6 +51,10 @@ var rootCmd = &cobra.Command{
 		// Prepare the release.
 		tag, err := cmd.Flags().GetString("tag")
 		utils.Check(err)
+		if tag == "" {
+			tag, err = keeparelease.GetTag()
+			utils.Check(err)
+		}
 		params := &github.Release{
 			TagName: tag,
 			Name:    title,

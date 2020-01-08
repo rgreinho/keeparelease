@@ -23,7 +23,7 @@ Simply download the binary for your platform from [the release page](https://git
 Creating a release and attaching all binaries:
 
 ```bash
-keeparelease -t 1.1.1 \
+keeparelease \
   -a keeparelease-1.1.1-darwin-amd64 \
   -a keeparelease-1.1.1-linux-amd64 \
   -a keeparelease-1.1.1-windows-amd64
