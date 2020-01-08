@@ -85,10 +85,13 @@ def builder(c, project, tag, output):
     """Build a project."""
     if not project.exists():
         raise ValueError(f"project {project} cannot be found in {project.resolve()}")
+    build_flags = (
+        f"-ldflags=\"-X 'github.com/rgreinho/keeparelease/cmd.Version={tag}'\""
+    )
     for platform in PLATFORMS:
         cmd = (
             f"GOOS={platform} GOARCH={GOARCH}"
-            f" go build -o {output.resolve()}-{tag}-{platform}-{GOARCH}"
+            f" go build {build_flags} -o {output.resolve()}-{tag}-{platform}-{GOARCH}"
         )
         c.run(cmd)
 
