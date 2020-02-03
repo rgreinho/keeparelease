@@ -74,6 +74,25 @@ and this project adheres to [Calendar Versioning](https://calver.org/).
 - Fix the AWS EC2 rate limit issue with docgen-nodes-reboot.
 `
 
+const calverChangelog2020 string = `
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Calendar Versioning](https://calver.org/).
+
+## [Unreleased]
+
+## [20.01.0]
+
+## Added
+
+- Add a mechanism to configure the common tools using environment variables.
+
+## [19.12.1]
+`
+
 func TestParseChangelog00(t *testing.T) {
 	testcases := []struct {
 		changelog       string
@@ -105,6 +124,13 @@ func TestParseChangelog00(t *testing.T) {
 
     - Fix the AWS EC2 rate limit issue with docgen-nodes-reboot.
     `), " \n")},
+		{
+			calverChangelog2020, "20.01.0", trimEdges(dedent.Dedent(`
+      ## Added
+
+      - Add a mechanism to configure the common tools using environment variables.
+      `), " \n"),
+		},
 	}
 
 	for _, tc := range testcases {
