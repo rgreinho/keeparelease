@@ -3,7 +3,6 @@ set -euo pipefail
 
 # Prepare variables.
 REPO=rgreinho/keeparelease
-# LATEST_TAG=$(git describe --abbrev=0)
 LATEST_TAG=$(git ls-remote --tags --refs --sort="v:refname" git://github.com/${REPO}.git | tail -n1 | sed 's/.*\///')
 VERSION=${VERSION:-$LATEST_TAG}
 PLATFORM=$(uname -s | tr '[:upper:]' '[:lower:]')
