@@ -16,7 +16,54 @@ Here is an example:
 
 ## Installation
 
+### Using the installer (recommended)
+
+The installer uses [Fetch](https://github.com/gruntwork-io/fetch), a tool to simplify
+downloading assets from a GitHub release. You must install it first in order to be able
+to run the installer:
+
+```bash
+./extras/fetch-installer.sh
+```
+
+Verify the installation by running `fetch --version`.
+
+Now you are ready to run the `keeparelease` installer:
+
+```bash
+./extras/keeparelease-installer.sh
+```
+
+Verify the installation by running `keeparelease --version`.
+
+By default it downloads the latest version available. If you want to download a specific
+version, set the `$VERSION` environment variable:
+
+```bash
+VERSION=1.2.0 ./extras/keeparelease-installer.sh
+```
+
+### Using curl
+
+Thfollowing commands will help you download the latest binary available to your platform:
+
+```bash
+REPO=rgreinho/keeparelease
+VERSION=$(git ls-remote --tags --refs --sort="v:refname" git://github.com/${REPO}.git | tail -n1 | sed 's/.*\///')
+PLATFORM=$(uname -s | tr '[:upper:]' '[:lower:]')
+curl -LO https://github.com/${REPO}/releases/download/${VERSION}/keeparelease-${VERSION}-${PLATFORM}-amd64
+```
+
+After that, you should add the executable permissions (usually using `chmod +x`),
+and move the binary to the location of your choice (usually in your path, for instance
+`/usr/local/bin`).
+
+### Manual
+
 Simply download the binary for your platform from [the release page](https://github.com/rgreinho/keeparelease/releases).
+
+Same as above, set the appropriate permission, and move the binary to the location of
+your choice.
 
 ## Usage
 
