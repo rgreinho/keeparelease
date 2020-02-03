@@ -9,6 +9,16 @@ executors:
 repo_cache_key: &repo_cache_key
   go-mod-{{ checksum "go.sum" }}.0
 
+install_keeparelease: &install_keeparelease
+  name: Install keeparelease
+  command: |
+    export BIN_DIR=/home/circleci/.local/bin/
+    mkdir -p "${BIN_DIR}"
+    export KEEPARELEASE_VERSION=1.2.0
+    export KEEPARELEASE_BIN="keeparelease-${KEEPARELEASE_VERSION}-linux-amd64"
+    curl -sLO "https://github.com/rgreinho/keeparelease/releases/download/${KEEPARELEASE_VERSION}/${KEEPARELEASE_BIN}"
+    chmod a+x "${KEEPARELEASE_BIN}"
+    mv "${KEEPARELEASE_BIN}" "${BIN_DIR}/keeparelease"
 
 jobs:
   prepare:
@@ -57,6 +67,8 @@ jobs:
       - checkout
       - restore_cache:
           key: *repo_cache_key
+      - run:
+          <<: *install_keeparelease
       - run:
           name: Build the artifacts for all the selected architectures and published a new GitHub release
           command: |
