@@ -28,10 +28,17 @@ to run the installer:
 
 Verify the installation by running `fetch --version`.
 
-Now you are ready to run the `keeparelease` installer:
+Once you [Fetch](https://github.com/gruntwork-io/fetch) is installed, you can install
+`keeparelease`, either by running the installer from this repository:
 
 ```bash
 ./extras/keeparelease-installer.sh
+```
+
+Or by running the it directly from GitHub:
+
+```bash
+bash <(curl -sL https://raw.githubusercontent.com/rgreinho/keeparelease/master/extras/keeparelease-installer.sh)
 ```
 
 Verify the installation by running `keeparelease --version`.
