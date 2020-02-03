@@ -12,7 +12,7 @@ import (
 )
 
 // re is the regex matching a semver in a markdown H2 header.
-var re = regexp.MustCompile(`^\#\#\s+\[{1,2}(?P<full_version>(?P<Major>0|[1-9]\d*)\.(?P<Minor>0|[1-9]\d*)\.(?P<Patch>0|[1-9]\d*)(?P<PreReleaseTagWithSeparator>-(?P<PreReleaseTag>(?:[a-z-][\da-z-]+|[\da-z-]+[a-z-][\da-z-]*|0|[1-9]\d*)(?:\.(?:[a-z-][\da-z-]+|[\da-z-]+[a-z-][\da-z-]*|0|[1-9]\d*))*))?(?P<BuildMetadataWithSeparator>\+(?P<BuildMetadata>[\da-z-]+(?:\.[\da-z-]+)*))?)`)
+var re = regexp.MustCompile(`\#\#\s+\[{1,2}(?P<full_version>(?P<Major>0|\d+)\.(?P<Minor>0|\d+)\.(?P<Patch>0|\d+)(?P<PreReleaseTagWithSeparator>-(?P<PreReleaseTag>(?:[a-z-][\da-z-]+|[\da-z-]+[a-z-][\da-z-]*|0|[1-9]\d*)(?:\.(?:[a-z-][\da-z-]+|[\da-z-]+[a-z-][\da-z-]*|0|[1-9]\d*))*))?(?P<BuildMetadataWithSeparator>\+(?P<BuildMetadata>[\da-z-]+(?:\.[\da-z-]+)*))?)`)
 
 // ParseChangelog parses a ChangeLog respecting the Keep A Changelog format.
 // Returns the title of the last release as well as its content.
