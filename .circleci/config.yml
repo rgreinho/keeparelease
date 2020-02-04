@@ -86,8 +86,8 @@ jobs:
     executor: golang
     steps:
       - checkout
-      - restore_cache:
-          key: *repo_cache_key
+      - attach_workspace:
+          at: *working_directory
       - run:
           <<: *install_mage
       - run:
