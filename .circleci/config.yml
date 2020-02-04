@@ -12,17 +12,6 @@ executors:
 repo_cache_key: &repo_cache_key
   go-mod-{{ checksum "go.sum" }}.0
 
-install_keeparelease: &install_keeparelease
-  name: Install keeparelease
-  command: |
-    export BIN_DIR=/home/circleci/.local/bin/
-    mkdir -p "${BIN_DIR}"
-    export KEEPARELEASE_VERSION=1.2.1
-    export KEEPARELEASE_BIN="keeparelease-${KEEPARELEASE_VERSION}-linux-amd64"
-    curl -sLO "https://github.com/rgreinho/keeparelease/releases/download/${KEEPARELEASE_VERSION}/${KEEPARELEASE_BIN}"
-    chmod a+x "${KEEPARELEASE_BIN}"
-    mv "${KEEPARELEASE_BIN}" "${BIN_DIR}/keeparelease"
-
 install_mage: &install_mage
   name: Install mage
   command: |
@@ -91,7 +80,7 @@ jobs:
       - run:
           <<: *install_mage
       - run:
-          <<: *install_keeparelease
+          command: go install
       - run:
           name: Build the artifacts for all the selected architectures and published a new GitHub release
           command: mage -v release
