@@ -8,7 +8,6 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
-	"strings"
 
 	"github.com/magefile/mage/mg"
 	"github.com/magefile/mage/sh"
@@ -81,10 +80,8 @@ func Publish() {
 
 	// Get the assets to publish.
 	for _, file := range files {
-		if strings.HasSuffix(file.Name(), ".zip") {
-			assets = append(assets, "-a")
-			assets = append(assets, filepath.Join(buildDir, file.Name()))
-		}
+		assets = append(assets, "-a")
+		assets = append(assets, filepath.Join(buildDir, file.Name()))
 	}
 
 	// Prepare the command to run
