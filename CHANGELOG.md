@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [[1.2.2]] - 2020.02.04
+
+### Changed
+
+- Replace the [invoke](http://www.pyinvoke.org/) task runner with the [mage](https://magefile.org/) task runner. [#17]
+
 ### Fixed
 
 - Fix the problem with the `--tag` flag which was not supposed to be mandatory. [#15]
@@ -57,3 +63,4 @@ Initial release.
 [//]: # (Issue/PR links)
 [#12]: https://github.com/rgreinho/keeparelease/pull/12
 [#15]: https://github.com/rgreinho/keeparelease/pull/15
+[#17]: https://github.com/rgreinho/keeparelease/pull/17
