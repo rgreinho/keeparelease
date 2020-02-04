@@ -38,7 +38,7 @@ Once you [Fetch](https://github.com/gruntwork-io/fetch) is installed, you can in
 Or by running the it directly from GitHub:
 
 ```bash
-bash <(curl -sL https://raw.githubusercontent.com/rgreinho/keeparelease/master/extras/keeparelease-installer.sh)
+bash <(curl -sSfL https://raw.githubusercontent.com/rgreinho/keeparelease/master/extras/keeparelease-installer.sh)
 ```
 
 Verify the installation by running `keeparelease --version`.
