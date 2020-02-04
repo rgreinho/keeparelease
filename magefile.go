@@ -135,7 +135,7 @@ func getBuiltArtifacts() []os.FileInfo {
 	buildDir := filepath.Join(currentDir, BuildDir)
 	files, err := ioutil.ReadDir(buildDir)
 	if err != nil {
-		fmt.Printf("Cannot find to package in %s. Forgot to build?\n", buildDir)
+		fmt.Printf("Cannot find files to package in %s. Forgot to build?\n", buildDir)
 		os.Exit(1)
 	}
 	return files

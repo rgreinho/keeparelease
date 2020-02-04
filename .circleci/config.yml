@@ -1,10 +1,13 @@
 version: 2.1
 
+working_directory: &working_directory
+  ~/project
+
 executors:
   golang:
     docker:
       - image: circleci/golang:1.13-buster
-    working_directory: ~/project
+    working_directory: *working_directory
 
 repo_cache_key: &repo_cache_key
   go-mod-{{ checksum "go.sum" }}.0
@@ -72,6 +75,10 @@ jobs:
       - run:
           name: Build the artifact
           command: mage -v dist
+      - persist_to_workspace:
+          root: *working_directory
+          paths:
+            - dist
 
   publish:
     executor: golang
