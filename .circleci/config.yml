@@ -74,7 +74,9 @@ jobs:
           <<: *install_mage
       - run:
           name: Build the artifact
-          command: mage -v dist
+          command: |
+            mage -v dist
+            ls -lh dist
       - persist_to_workspace:
           root: *working_directory
           paths:
