@@ -85,6 +85,7 @@ func trimEdges(s, cutset string) string {
 	return trimmed
 }
 
+// GetTag retrieves the latest tag from a git repository.
 func GetTag() (string, error) {
 	cmd := exec.Command("git", "describe")
 	var out bytes.Buffer

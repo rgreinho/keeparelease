@@ -14,11 +14,22 @@ install_keeparelease: &install_keeparelease
   command: |
     export BIN_DIR=/home/circleci/.local/bin/
     mkdir -p "${BIN_DIR}"
-    export KEEPARELEASE_VERSION=1.2.0
+    export KEEPARELEASE_VERSION=1.2.1
     export KEEPARELEASE_BIN="keeparelease-${KEEPARELEASE_VERSION}-linux-amd64"
     curl -sLO "https://github.com/rgreinho/keeparelease/releases/download/${KEEPARELEASE_VERSION}/${KEEPARELEASE_BIN}"
     chmod a+x "${KEEPARELEASE_BIN}"
     mv "${KEEPARELEASE_BIN}" "${BIN_DIR}/keeparelease"
+
+install_mage: &install_mage
+  name: Install mage
+  command: |
+    export BIN_DIR=/home/circleci/.local/bin/
+    mkdir -p "${BIN_DIR}"
+    export MAGE_VERSION=1.9.0
+    export MAGE_TAR="mage_${MAGE_VERSION}_Linux-64bit.tar.gz"
+    curl -sLO "https://github.com/magefile/mage/releases/download/v${MAGE_VERSION}/${MAGE_TAR}"
+    tar xf "${MAGE_TAR}"
+    mv mage "${BIN_DIR}/"
 
 jobs:
   prepare:
@@ -35,20 +46,21 @@ jobs:
           key: *repo_cache_key
           paths:
             - /go/pkg/mod
-  test:
+  ci:
     executor: golang
     steps:
       - checkout
       - restore_cache:
           key: *repo_cache_key
       - run:
+          <<: *install_mage
+      - run:
           name: Run linters and unit-tests
           command: |
             go get -u golang.org/x/tools/cmd/goimports
             go get -u golang.org/x/lint/golint
-            sudo apt-get install python3.7 python3-pip
-            pip3 install invoke
-            inv test
+            curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s v1.21.0
+            mage ci
   build:
     executor: golang
     steps:
@@ -56,11 +68,11 @@ jobs:
       - restore_cache:
           key: *repo_cache_key
       - run:
+          <<: *install_mage
+      - run:
           name: Build the artifact
-          command: |
-            sudo apt-get install python3.7 python3-pip
-            pip3 install invoke
-            inv dist
+          command: mage -v dist
+
   publish:
     executor: golang
     steps:
@@ -68,13 +80,12 @@ jobs:
       - restore_cache:
           key: *repo_cache_key
       - run:
+          <<: *install_mage
+      - run:
           <<: *install_keeparelease
       - run:
           name: Build the artifacts for all the selected architectures and published a new GitHub release
-          command: |
-            sudo apt-get install python3.7 python3-pip
-            pip3 install invoke
-            inv release
+          command: mage -v release
 
 workflows:
   version: 2
@@ -84,7 +95,7 @@ workflows:
           filters:
             tags:
               only: /.*/
-      - test:
+      - ci:
           requires:
             - prepare
           filters:
@@ -98,7 +109,7 @@ workflows:
               only: /.*/
       - publish:
           requires:
-            - test
+            - ci
             - build
           filters:
             branches:
