@@ -93,7 +93,7 @@ func Publish() {
 	// Prepare the release arguments.
 	keeparelease_args := []string{
 		"-f",
-		"Changelog.md",
+		"CHANGELOG.md",
 	}
 	keeparelease_args = append(keeparelease_args, assets...)
 	sh.RunV("keeparelease", keeparelease_args...)
