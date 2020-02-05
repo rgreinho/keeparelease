@@ -108,7 +108,8 @@ func builder(platform, arch, tag, out, cwd string) {
 	cmd := exec.Command(
 		"go",
 		"build",
-		fmt.Sprintf("-ldflags=\"-X main.Version=%s\"", tag),
+		fmt.Sprintf("-ldflags"),
+		fmt.Sprintf("-X github.com/rgreinho/keeparelease/cmd.Version=%s", tag),
 		fmt.Sprintf("-o"),
 		fmt.Sprintf("%s-%s-%s-%s", out, tag, platform, arch),
 	)
@@ -124,7 +125,7 @@ func builder(platform, arch, tag, out, cwd string) {
 
 func getTag() string {
 	tag, err := sh.Output("git", "describe")
-	if err != nil {
+	if err != nil || tag == "" {
 		fmt.Printf("Cannot retrieve current git tag: %s.\n", err)
 		os.Exit(1)
 	}
