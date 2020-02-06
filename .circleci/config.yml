@@ -80,7 +80,9 @@ jobs:
       - run:
           <<: *install_mage
       - run:
-          command: go install
+          command: |
+            go install
+            echo "export PATH=$GOPATH/bin:$PATH" >> $BASH_ENV
       - run:
           name: Build the artifacts for all the selected architectures and published a new GitHub release
           command: mage -v release

@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"errors"
 	"io/ioutil"
+	"os"
 	"os/exec"
 	"regexp"
 	"strings"
@@ -13,6 +14,9 @@ import (
 
 // re is the regex matching a semver in a markdown H2 header.
 var re = regexp.MustCompile(`\#\#\s+\[{1,2}(?P<full_version>(?P<Major>0|\d+)\.(?P<Minor>0|\d+)\.(?P<Patch>0|\d+)(?P<PreReleaseTagWithSeparator>-(?P<PreReleaseTag>(?:[a-z-][\da-z-]+|[\da-z-]+[a-z-][\da-z-]*|0|[1-9]\d*)(?:\.(?:[a-z-][\da-z-]+|[\da-z-]+[a-z-][\da-z-]*|0|[1-9]\d*))*))?(?P<BuildMetadataWithSeparator>\+(?P<BuildMetadata>[\da-z-]+(?:\.[\da-z-]+)*))?)`)
+
+// remoteRegex is used to extract the owner/organization and project name from a git remote url.
+var remoteRegex = regexp.MustCompile(`(?m)github.com(?:[:/])(?P<owner>[^\/]*)/(?P<repo>[^\/]*)\.git`)
 
 // ParseChangelog parses a ChangeLog respecting the Keep A Changelog format.
 // Returns the title of the last release as well as its content.
@@ -94,5 +98,19 @@ func GetTag() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return out.String(), nil
+	return strings.TrimSpace(out.String()), nil
+}
+
+// GetInfo gets owner/repo information.
+func GetInfo() (owner, repo string) {
+	// Try to get the info from the repo itself.
+	out, err := exec.Command("git", "remote", "get-url", "origin").Output()
+	if err == nil {
+		if matches := remoteRegex.FindStringSubmatch(string(out)); len(matches) == 3 {
+			return matches[1], matches[2]
+		}
+	}
+
+	// Try to get the info from the environment variables.
+	return os.Getenv("GITHUB_USER"), os.Getenv("GITHUB_REPOSITORY")
 }

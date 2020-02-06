@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [[1.3.0]] - 2020.02.06
+
+## Changed
+
+- [INTERNAL] Removes the `hub` dependency and perform all the GitHub operation using
+  the `google/go-github` library.
+- [INTERNAL] Improves error handling and error messages.
+- Add a `--log` flag.
+
+## Fix
+
+- Fix tag auto-detection.
+
 ## [[1.2.2]] - 2020.02.04
 
 ### Changed
@@ -59,6 +72,7 @@ Initial release.
 [1.1.2]: https://github.com/rgreinho/keeparelease/releases/tag/1.1.2
 [1.2.0]: https://github.com/rgreinho/keeparelease/releases/tag/1.2.0
 [1.2.1]: https://github.com/rgreinho/keeparelease/releases/tag/1.2.1
+[1.3.0]: https://github.com/rgreinho/keeparelease/releases/tag/1.3.0
 
 [//]: # (Issue/PR links)
 [#12]: https://github.com/rgreinho/keeparelease/pull/12
