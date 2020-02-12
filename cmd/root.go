@@ -145,28 +145,6 @@ func init() {
 	rootCmd.Flags().StringP("tag", "t", "", "Use a specific tag")
 }
 
-// func uploadAssets(gh *github.Client, release *github.Release, assets []string) {
-// 	for _, asset := range assets {
-// 		var label string
-// 		parts := strings.SplitN(asset, "#", 2)
-// 		asset = parts[0]
-// 		if len(parts) > 1 {
-// 			label = parts[1]
-// 		}
-
-// 		for _, existingAsset := range release.Assets {
-// 			if existingAsset.Name == filepath.Base(asset) {
-// 				err := gh.DeleteReleaseAsset(&existingAsset)
-// 				utils.Check(err)
-// 				break
-// 			}
-// 		}
-// 		ui.Errorf("Attaching release asset `%s'...\n", asset)
-// 		_, err := gh.UploadReleaseAsset(release, asset, label)
-// 		utils.Check(err)
-// 	}
-// }
-
 // SetUpLogs sets the log level.
 func setUpLogs(level string) error {
 	// Read the log level
@@ -174,7 +152,7 @@ func setUpLogs(level string) error {
 	//  2. then the ENV vars
 	//  3. then use the default value.
 	if level == "" {
-		level = os.Getenv("ARMAMENT_LOG_LEVEL")
+		level = os.Getenv("KAR_LOG_LEVEL")
 		if level == "" {
 			level = logrus.WarnLevel.String()
 		}

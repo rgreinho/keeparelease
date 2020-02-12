@@ -2,7 +2,7 @@
 
 Publish beautiful GitHub releases with "keep a changelog".
 
-## Goal
+## Features
 
 This tool was made to simplify creating beatiful releases on GitHub for projects following the
 "[Keep A Changelog](https://keepachangelog.com/en/1.0.0/)" specification to write their Changelogs.
@@ -87,4 +87,17 @@ Print the changelog for the latest release:
 
 ```bash
 keeparelease -x
+```
+
+Set the log level on the CLI:
+
+```bash
+keeparelease -l debug
+```
+
+Set the log level with environment variables:
+
+```bash
+export KAR_LOG_LEVEL=DEBUG
+keearelease
 ```
